@@ -8,6 +8,7 @@ import com.springdemo.demo.mapper.QuestionMapper;
 import com.springdemo.demo.mapper.UserMapper;
 import com.springdemo.demo.model.Question;
 import com.springdemo.demo.model.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,26 @@ public class QuestionService {
             questionDTO.setUser(user);
         }
         return questionPageDTOInfo;
+    }
+
+    public QuestionDTO findById(Integer id) {
+        Question question = questionMapper.findById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setUser(userMapper.findById(question.getCreator()));
+        return questionDTO;
+    }
+
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            System.out.println("id == null");
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {
+            System.out.println("id!=null, update");
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
     }
 }

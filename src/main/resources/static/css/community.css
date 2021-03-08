@@ -26,3 +26,11 @@ body {
     font-weight: normal;
     color: #999;
 }
+
+.grey {
+    color: gray;
+}
+
+.black {
+    color: black;
+}

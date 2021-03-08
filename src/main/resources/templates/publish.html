@@ -5,7 +5,6 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <title>Publish - Demo Community</title>
     <head th:insert="~{import :: head}"></head>
-
 </head>
 <body>
 <div th:insert="~{navigation :: navigation}"></div>
@@ -23,6 +22,7 @@
                 </h2>
                 <hr>
                 <form action="/publish" method="post">
+                    <input name="id" th:value="${id}" type="hidden">
                     <div class="form-group">
                         <label for="title">New Post</label>
                         <input class="form-control form-control-lg" id="title" name="title"
