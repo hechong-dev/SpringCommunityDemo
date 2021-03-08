@@ -47,15 +47,17 @@ public class OAuthController {
         String accessToken = githubAccess.getAccessToken(accessTokenDTO);
         GithubUserDTO githubUserDTO = githubAccess.getUser(accessToken);
 
-        if (githubUserDTO != null) {
+        if (githubUserDTO != null && githubUserDTO.getId() != null) {
             // log on succeeded
             User user = new User();
             user.setName(githubUserDTO.getName());
             String token = UUID.randomUUID().toString();
             user.setToken(token);
+            user.setBio(githubUserDTO.getBio());
             user.setAccountId(String.valueOf(githubUserDTO.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubUserDTO.getAvatar_url());
             userMapper.insert(user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";

@@ -1,0 +1,28 @@
+.main-outer {
+    margin: 30px;
+    background-color: white;
+}
+
+.main-inter {
+    padding: 30px;
+}
+
+body {
+    background-color: #efefef;
+}
+
+.btn-publish {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+}
+
+.post-info {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
