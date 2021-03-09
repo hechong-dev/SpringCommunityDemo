@@ -29,7 +29,7 @@ public class QuestionService {
         PageInfo<QuestionDTO> questionPageDTOInfo = PageUtils.pageInfo2PageInfoDTO(questionPageInfo, QuestionDTO.class);
 
         for (QuestionDTO questionDTO : questionPageDTOInfo.getList()) {
-            User user = userMapper.findById(questionDTO.getCreator());
+            User user = userMapper.selectByPrimaryKey(questionDTO.getCreator());
             questionDTO.setUser(user);
         }
         return questionPageDTOInfo;
@@ -39,18 +39,16 @@ public class QuestionService {
         Question question = questionMapper.findById(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
-        questionDTO.setUser(userMapper.findById(question.getCreator()));
+        questionDTO.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
         return questionDTO;
     }
 
     public void createOrUpdate(Question question) {
         if (question.getId() == null) {
-            System.out.println("id == null");
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             questionMapper.create(question);
         } else {
-            System.out.println("id!=null, update");
             question.setGmtModified(question.getGmtCreate());
             questionMapper.update(question);
         }
