@@ -7,6 +7,7 @@ import com.springdemo.demo.dto.QuestionDTO;
 import com.springdemo.demo.mapper.QuestionMapper;
 import com.springdemo.demo.mapper.UserMapper;
 import com.springdemo.demo.model.Question;
+import com.springdemo.demo.model.QuestionExample;
 import com.springdemo.demo.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class QuestionService {
 
     public PageInfo<QuestionDTO> list(Integer page) {
         PageHelper.startPage(page, 5);
-        List<Question> questionList = questionMapper.list();
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBs(null);
         PageInfo<Question> questionPageInfo = new PageInfo<>(questionList);
         PageInfo<QuestionDTO> questionPageDTOInfo = PageUtils.pageInfo2PageInfoDTO(questionPageInfo, QuestionDTO.class);
 
@@ -36,7 +37,8 @@ public class QuestionService {
     }
 
     public QuestionDTO findById(Integer id) {
-        Question question = questionMapper.findById(id);
+        QuestionExample questionExample = new QuestionExample();
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         questionDTO.setUser(userMapper.selectByPrimaryKey(question.getCreator()));
@@ -47,10 +49,10 @@ public class QuestionService {
         if (question.getId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            questionMapper.insert(question);
         } else {
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.update(question);
+            questionMapper.updateByPrimaryKeyWithBLOBs(question);
         }
     }
 }

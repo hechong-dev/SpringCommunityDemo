@@ -29,7 +29,8 @@
         </javaClientGenerator>
 
         <table schema="spdemo" tableName="user">
-            <property name="useActualColumnNames" value="false"/>
+        </table>
+        <table schema="spdemo" tableName="question">
         </table>
 
     </context>
